@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500&display=swap');
+:root {
+    --node-bg-color: rgba(38, 48, 77, 0.272);
+    --create-node-anim-duration: .4s;
+}
+body {
+    font-family: 'Nunito', sans-serif !important;
+}
+.border-custom {
+    border: rgb(52, 52, 52) 1px solid !important;
+}
+.border-custom-bottom {
+    border-bottom: rgb(52, 52, 52) 1px solid !important;
+}
+.border-custom-top {
+    border-top: rgb(52, 52, 52) 1px solid !important;
+}
+.navbar {
+    display: flex;
+    position: absolute;
+    top: 0;
+    height: 6vh;
+    box-shadow: rgb(21, 21, 21) 0px 0px 5px 2px;
+}
+.nav-settings-btn {
+    opacity: 75%;
+}
+@media only screen and (max-height: 610px) {
+    .navbar {
+        display: none !important;
+    }
+    #chat {
+        height: 100vh !important;
+    }
+}
+@media only screen and (max-width: 772px) {
+    .nav-item-search {
+        display: none !important;
+    }
+}
+#chat {
+    height: 94vh;
+    bottom: 0px;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: auto; 
+}
+.no-anim {
+    animation: none !important;
+}
+.node-anim {
+    animation-name: show-node;
+    animation-duration: var(--create-node-anim-duration);
+}
+.node {
+    background-color: var(--node-bg-color) !important;
+}
+@keyframes show-node {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+.system-node {
+    border: 1px solid rgb(172, 39, 39) !important;
+}
