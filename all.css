@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500&display=swap');
 :root {
     --node-bg-color: rgba(38, 48, 77, 0.272);
-    --create-node-anim-duration: .4s;
+    --create-node-anim-duration: .2s;
 }
 body {
     font-family: 'Nunito', sans-serif !important;
@@ -57,7 +57,7 @@ body {
 }
 @keyframes show-node {
     from {
-        opacity: 0;
+        opacity: .3;
     }
     to {
         opacity: 1;

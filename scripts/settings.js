@@ -3,9 +3,15 @@ function save_settings() {
     let inputs = $('#settings').find('input')
     for (const [title, inputEl] of Object.entries(inputs)) {
         if (title != 'length') {
-            let setting_title = inputEl.value
+            let setting_title = $(inputEl).attr('title')
             let setting_name = $(inputEl).attr('name')
-            let setting_value = inputEl.checked
+            let setting_type = $(inputEl).attr('type')
+            let setting_value
+            if (setting_type == 'checkbox') {
+                setting_value = inputEl.checked
+            } else if (setting_type == 'number') {
+                setting_value = $(inputEl).val()
+            }
             if (getCookie(setting_name) != `${setting_value}`) {
                 if (setting_name == 'hidden_navbar' && setting_value === true) {
                     $('#nav').css('display', 'none')
@@ -22,17 +28,21 @@ function save_settings() {
     let changedSettingsText = ''
     for (const [name, details] of Object.entries(changedSettings)) {
         let settingText = details.text
-        let settingInfo = 'setting turned off.'
-        if (details.value == true) {
-            settingInfo = 'setting turned on.'
+        let settingValue = details.value
+        if (name == 'max_node_limit') {
+            changedSettingsText = changedSettingsText + settingText + ', is set to ' + settingValue + '<br>'
+        } else {
+            let settingInfo = 'setting turned off.'
+            if (details.value == true) {
+                settingInfo = 'setting turned on.'
+            }
+            changedSettingsText = changedSettingsText + settingText + ' ' + settingInfo + '<br>'
         }
-        changedSettingsText = changedSettingsText + settingText + ' ' + settingInfo + '<br>'
     }
     if (changedSettingsText != '') {
-        console.log(changedSettingsText)
-        createSystemNode({
-            message: 'Settings have been changed:<br>' + changedSettingsText,
-            whereToAdd: chatID
+        createNode({
+            nodeType: 'systemnode',
+            rawMessage: 'Settings have been changed:<br>' + changedSettingsText
         })
     }
     $('#settingsModal').modal('hide')

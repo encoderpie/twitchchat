@@ -4,8 +4,8 @@ let config = {
     max_node_limit: 70,
     assets_dir_name: 'assets'
 }
-// Get cookies for config
-let settingCookies = ['channelname', 'max_node_limit']
+// Get cookie/cookies for change config
+let settingCookies = ['channelname']
 settingCookies.forEach(cookieName => {
     let cookie = getCookie(cookieName)
     if (cookie != null && cookie != undefined && cookie != '') {
@@ -15,7 +15,8 @@ settingCookies.forEach(cookieName => {
 let cookie_config = {
     close_user_badges: 'close_user_badges',
     close_user_colors: 'close_user_colors',
-    close_animation: 'close_animation'
+    close_animation: 'close_animation',
+    max_node_limit: 'max_node_limit'
 }
 // Tmi - Twitch connection
 const client = new tmi.Client({
@@ -33,10 +34,15 @@ const chatEl = document.getElementById('chat')
 const chatID = 'chat'
 // Checking nodes for chat node limit
 function checkNodes() {
-    let maxNodeLimit = config.max_node_limit
+    let maxNodeLimit
+    if (getCookie('max_node_limit') == null) {
+        maxNodeLimit = config.max_node_limit
+    } else {
+        maxNodeLimit = getCookie('max_node_limit')
+    }
     let manyNodesAreInChat = chat.childElementCount
     if (manyNodesAreInChat >= maxNodeLimit) {
-       chat.removeChild(chat.firstElementChild)
+        chatEl.removeChild(chat.firstElementChild)
     }
 } 
 // Adding badges
@@ -81,7 +87,6 @@ function filterMessage(rawMessage, user) {
     return filteredMessage
 }
 // Creating chat node, example: 'user823: hello everyone!'
-let animationClass = 'no-anim'
 function createChatNode(data) {
     let rawMessage = data.rawMessage
     let whereToAdd = data.whereToAdd
@@ -90,6 +95,7 @@ function createChatNode(data) {
     let message = filterMessage(rawMessage, userData)
     let userColor = 'white'
     let badgesHTML = ''
+    let animationClass = 'no-anim'
     if (getCookie(cookie_config.close_user_colors) == 'false') {
         userColor = userData['color']
     }
@@ -106,6 +112,7 @@ function createChatNode(data) {
 function createSystemNode(data) {
     let message = data.message
     let whereToAdd = data.whereToAdd
+    let animationClass = 'no-anim'
     if (getCookie(cookie_config.close_animation) == 'false') {
         animationClass = 'node-anim'
     }
@@ -116,7 +123,7 @@ function createNode(data) {
     let nodeType = data.nodeType
     let rawMessage = data.rawMessage
     let user = data.user
-    const isScrolledToBottom = chatEl.scrollHeight - chatEl.clientHeight <= chatEl.scrollTop + 1
+    const isScrolledToBottom = chatEl.scrollHeight - chatEl.clientHeight <= chatEl.scrollTop + 5
     checkNodes()
     // If node is chatnode, create it
     if (nodeType == 'chatnode') {
