@@ -42,7 +42,7 @@ function checkNodes() {
     }
     let manyNodesAreInChat = chat.childElementCount
     if (manyNodesAreInChat >= maxNodeLimit) {
-        chatEl.removeChild(chat.firstElementChild)
+        chatEl.removeChild(document.getElementById(chatID).firstElementChild)
     }
 } 
 // Adding badges
